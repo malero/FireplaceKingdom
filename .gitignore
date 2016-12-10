@@ -37,6 +37,8 @@
 *.suo
 *.opensdf
 *.sdf
+*.VC.db
+*.VC.VC.opendb
 *.VC.opendb
 
 # Precompiled Assets
