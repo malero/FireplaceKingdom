@@ -24,6 +24,11 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Debug")
 	ALaneSpline* Lane;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Binding")
+	USkeletalMeshComponent* UnitMesh;
+
+	float SplineDistance;
 };

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "Components/SplineComponent.h"
 #include "LaneSpline.generated.h"
 
 UCLASS()
@@ -19,4 +20,8 @@ public:
 	
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
+
+	/**Spline component*/
+	UPROPERTY(BlueprintReadWrite)
+	USplineComponent* Spline;
 };

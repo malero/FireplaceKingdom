@@ -27,4 +27,3 @@ void ALaneSpline::Tick( float DeltaTime )
 	Super::Tick( DeltaTime );
 
 }
-
