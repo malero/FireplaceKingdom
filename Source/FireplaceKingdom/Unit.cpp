@@ -12,35 +12,40 @@ AUnit::AUnit()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	// Configure character movement
+	GetCharacterMovement()->bOrientRotationToMovement = true; // Rotate character to moving direction
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 640.f, 0.f);
+	GetCharacterMovement()->bConstrainToPlane = true;
+	GetCharacterMovement()->bSnapToPlaneAtStart = true;
+
 }
 
 // Called when the game starts or when spawned
 void AUnit::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	MovementCooldown = 0;
 }
 
 // Called every frame
 void AUnit::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
+	MovementCooldown -= DeltaTime;
 
-	if (Lane->Spline != NULL) {
-		SplineDistance += DeltaTime * 100;
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "Distance: " + FString::FromInt (int(SplineDistance)));
-		FRotator Rotation = Lane->Spline->GetWorldRotationAtDistanceAlongSpline(SplineDistance);
+	if (MovementCooldown <= 0 && Lane->Spline != NULL) {
+		MovementCooldown = 0.1f;
+		SplineDistance += 100;
 		FVector Location = Lane->Spline->GetWorldLocationAtDistanceAlongSpline(SplineDistance);
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "Location: " + FString::FromInt(Location.X) + ", " + FString::FromInt(Location.Y));
-		SetActorRotation(Rotation);
-		SetActorLocation(Location);
+
+		UNavigationSystem* const NavSys = GetWorld()->GetNavigationSystem();
+		float const Distance = FVector::Dist(Location, GetActorLocation());
+		// We need to issue move command only if far enough in order for walk animation to play correctly
+		if (NavSys && (Distance > 0.0f))
+		{
+			NavSys->SimpleMoveToLocation(GetController(), Location);
+		}
+
 	}
-}
-
-// Called to bind functionality to input
-void AUnit::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 

@@ -66,6 +66,7 @@ void AUnitGenerator::GenerateUnit()
 		// if world exists
 		AUnit* Unit = World->SpawnActor<AUnit>(Tile.TileData.Unit, GetActorLocation(), GetActorRotation());
 		Unit->Lane = Lane;
+		Unit->SetActorLocation(GetActorLocation());
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "Pre: " + FString::FromInt(Tile.UnitsLeftToSpawn));
 		Tile.DeductSpawnedUnits();
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "Post: " + FString::FromInt(Tile.UnitsLeftToSpawn));
