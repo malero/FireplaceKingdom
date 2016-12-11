@@ -4,7 +4,7 @@
 
 #include "GameFramework/Actor.h"
 #include "Tile.h"
-#include "ActiveTile.h"
+#include "QueuedTile.h"
 #include "LaneSpline.h"
 #include "UnitGenerator.generated.h"
 
@@ -23,6 +23,7 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+
 	void GenerateUnit();
 	void SetSpawnTimer();
 	void AddTile(FName ID);
@@ -31,15 +32,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Debug")
 	TArray<FName> DebugTiles;
 
+	TArray<UQueuedTile*> Tiles;
 
-	TArray<ActiveTile> Tiles;
-	ActiveTile *pTile;
-	ActiveTile Tile;
+	UQueuedTile *pTile;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generator")
 	ALaneSpline* Lane;
 
 	float SpawnTimer;
+
 	float SpawnDelay;
 
 	UPROPERTY(EditAnywhere)
