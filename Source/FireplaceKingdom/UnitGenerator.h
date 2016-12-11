@@ -26,6 +26,7 @@ public:
 	void GenerateUnit();
 	void SetSpawnTimer();
 	void AddTile(FName ID);
+	FVector GetRandomNearbyLocation();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Debug")
 	TArray<FName> DebugTiles;

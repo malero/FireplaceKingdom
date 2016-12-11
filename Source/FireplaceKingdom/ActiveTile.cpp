@@ -13,7 +13,7 @@ ActiveTile::~ActiveTile()
 
 void ActiveTile::CalculateUnitsLeftToSpawn()
 {
-	UnitsLeftToSpawn = TileData.UnitsPerSpawn * TileData.UnitsToSpawn;
+	UnitsLeftToSpawn = TileData.UnitsToSpawn;
 }
 
 void ActiveTile::DeductSpawnedUnits()

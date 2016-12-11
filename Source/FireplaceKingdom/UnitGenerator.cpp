@@ -53,27 +53,33 @@ void AUnitGenerator::Tick( float DeltaTime )
 			SetSpawnTimer();
 			GenerateUnit();
 		} else {
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("No units left to spawn"));
+
 		}
 	}
 }
 
 void AUnitGenerator::GenerateUnit()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Spawning"));
+
 	UWorld* const World = GetWorld(); // get a reference to the world
 	if (World) {
 		// if world exists
-		AUnit* Unit = World->SpawnActor<AUnit>(Tile.TileData.Unit, GetActorLocation(), GetActorRotation());
-		Unit->Lane = Lane;
-		Unit->SetActorLocation(GetActorLocation());
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "Pre: " + FString::FromInt(Tile.UnitsLeftToSpawn));
+		for (int i = 0; i < Tile.TileData.UnitsPerSpawn; i++) {
+			AUnit* Unit = World->SpawnActor<AUnit>(Tile.TileData.Unit, GetActorLocation(), GetActorRotation());
+			Unit->Lane = Lane;
+			Unit->SetActorLocation(GetRandomNearbyLocation());
+		}
 		Tile.DeductSpawnedUnits();
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "Post: " + FString::FromInt(Tile.UnitsLeftToSpawn));
 		if (Tile.UnitsLeftToSpawn <= 0) {
 			pTile = NULL;
 		}
 	}
+}
+
+FVector AUnitGenerator::GetRandomNearbyLocation()
+{
+	FVector Location = GetActorLocation();
+	return Location + FVector(rand() % 30, rand() % 30, 0);
 }
 
 void AUnitGenerator::SetSpawnTimer()
