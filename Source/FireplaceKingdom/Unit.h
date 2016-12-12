@@ -16,6 +16,9 @@ public:
 	// Sets default values for this character's properties
 	AUnit();
 
+	UPROPERTY(EditAnywhere, Category = "Behavior")
+	class UBehaviorTree *UnitBehavior;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	

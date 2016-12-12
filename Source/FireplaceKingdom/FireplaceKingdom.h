@@ -3,7 +3,7 @@
 #ifndef __FIREPLACEKINGDOM_H__
 #define __FIREPLACEKINGDOM_H__
 
-#include "EngineMinimal.h"
+#include "Engine.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogFireplaceKingdom, Log, All);
 
