@@ -1,7 +1,7 @@
 // Copyright 1998-2016 Epic Games, Inc. All Rights Reserved.
 
-#include "EngineUtils.h"
 #include "FireplaceKingdom.h"
+#include "EngineUtils.h"
 #include "FireplaceKingdomGameMode.h"
 #include "FireplaceKingdomPlayerController.h"
 #include "FireplaceKingdomCharacter.h"
