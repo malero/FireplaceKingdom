@@ -107,6 +107,5 @@ FVector AUnitGenerator::GetRandomNearbyLocation()
 
 void AUnitGenerator::SetSpawnTimer()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Setting Spawn Timer ") + FString::SanitizeFloat(TimerDelay));
 	GetWorldTimerManager().SetTimer(SpawnTimerHandle, this, &AUnitGenerator::SpawnUnits, TimerDelay, false);
 }
