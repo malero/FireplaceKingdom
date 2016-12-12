@@ -16,6 +16,7 @@ class FIREPLACEKINGDOM_API AMyPlayerState : public APlayerState
 	
 public:
 	void SetTeam(ETeamEnum _Team);
+	ETeamEnum GetTeam();
 
 private:
 	// The team of the player

@@ -26,6 +26,13 @@ void UQueuedTile::SetTileData(FTileStruct *Data)
 	UnitsPerSpawn = Data->UnitsPerSpawn;
 	SpawnDelay = Data->SpawnDelay;
 	UnitsLeftToSpawn = UnitsToSpawn;
+
+	Health = Data->Health;
+	AttackMin = Data->AttackMin;
+	AttackMax = Data->AttackMax;
+	AttackDistance = Data->AttackDistance;
+	VisionDistance = Data->VisionDistance;
+	MovementSpeed = Data->MovementSpeed;
 }
 
 int32 UQueuedTile::GetUnitsLeftToSpawn()

@@ -34,10 +34,18 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generator")
 	ETeamEnum Team;
 
+	void SetMovementSpeed(float Speed);
+	void MoveAlongSpline();
+
 	float SplineDistance;
 	float MovementCooldown;
 
 	float Health;
+	float AttackMin;
+	float AttackMax;
+	float AttackDistance;
+	float VisionDistance; // How far can this unit see and spot enemeies/other PoIs?
+	float MovementSpeed;
 
 	UFUNCTION(Server, Reliable, WithValidation)
 	void AttackTarget(AUnit *Target);

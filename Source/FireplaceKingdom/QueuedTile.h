@@ -27,6 +27,13 @@ public:
 
 	int32 UnitsPerSpawn;
 
+	float Health;
+	float AttackMin;
+	float AttackMax;
+	float AttackDistance;
+	float VisionDistance; // How far can this unit see and spot enemeies/other PoIs?
+	float MovementSpeed;
+
 	float SpawnDelay;
 	
 	void SetTileData(FTileStruct *Data);

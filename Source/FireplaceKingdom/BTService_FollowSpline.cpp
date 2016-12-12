@@ -7,14 +7,15 @@
 #include "BehaviorTree/Blackboard/BlackboardKeyAllTypes.h"
 #include "Unit.h"
 #include "ElfAI.h"
-#include "BTService_CheckForElves.h"
+#include "BTService_FollowSpline.h"
 
-UBTService_CheckForElves::UBTService_CheckForElves()
+
+UBTService_FollowSpline::UBTService_FollowSpline()
 {
 	bCreateNodeInstance = true;
 }
 
-void UBTService_CheckForElves::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
+void UBTService_FollowSpline::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	AElfAI *ElfAI = Cast<AElfAI>(OwnerComp.GetAIOwner());
 	AUnit *Elf = Cast<AUnit>(ElfAI->GetPawn());

@@ -81,6 +81,15 @@ void AUnitGenerator::SpawnUnits()
 				Unit->Lane = Lane;
 				Unit->SetActorLocation(GetRandomNearbyLocation());
 				Unit->Team = Team;
+				
+				// Set unit properties
+				Unit->Health = Tile->Health;
+				Unit->AttackMin = Tile->AttackMin;
+				Unit->AttackMax = Tile->AttackMax;
+				Unit->AttackDistance = Tile->AttackDistance;
+				Unit->VisionDistance = Tile->VisionDistance;
+				Unit->SetMovementSpeed(Tile->MovementSpeed);
+
 				Tile->DeductSpawnedUnit();
 			}
 			if (Tile->GetUnitsLeftToSpawn() <= 0)

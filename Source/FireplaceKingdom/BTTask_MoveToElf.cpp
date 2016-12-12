@@ -18,12 +18,15 @@ EBTNodeResult::Type UBTTask_MoveToElf::ExecuteTask(UBehaviorTreeComponent& Owner
 
 	if (Enemy && Elf)
 	{
-		ElfAI->MoveToActor(Enemy, 5.f, true, true, true, 0, true);
-		if (Elf->GetDistanceTo(Enemy) <= 250.f)
+		
+		if (Elf->GetDistanceTo(Enemy) > Elf->AttackDistance)
 		{
-			Elf->AttackTarget(Enemy);
+			ElfAI->MoveToActor(Enemy, 5.f, true, true, true, 0, true);
+			return EBTNodeResult::Succeeded;
 		}
-		return EBTNodeResult::Succeeded;
+		// We're within attacking range, let's killl!
+		// Failing will tell behavior tree to move on to the next task
+		return EBTNodeResult::Failed;
 	}
 	else
 	{
@@ -31,4 +34,3 @@ EBTNodeResult::Type UBTTask_MoveToElf::ExecuteTask(UBehaviorTreeComponent& Owner
 	}
 	return EBTNodeResult::Failed;
 }
-

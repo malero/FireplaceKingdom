@@ -18,7 +18,6 @@ AUnit::AUnit()
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 640.f, 0.f);
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -31,7 +30,7 @@ void AUnit::BeginPlay()
 
 void AUnit::AttackTarget_Implementation(AUnit *Target)
 {
-	Target->Health -= rand() % 4;
+	Target->Health -= FMath::RandRange(AttackMin, AttackMax);
 }
 
 bool AUnit::AttackTarget_Validate(AUnit *Target)
@@ -46,23 +45,26 @@ void AUnit::Tick( float DeltaTime )
 	if (Role == ROLE_Authority) {
 		if (Health <= 0)
 			Destroy();
+	}
+}
 
-		MovementCooldown -= DeltaTime;
+void AUnit::MoveAlongSpline()
+{
+	if (Role == ROLE_Authority) {
+		SplineDistance += 100;
+		FVector Location = Lane->Spline->GetWorldLocationAtDistanceAlongSpline(SplineDistance);
 
-		if (MovementCooldown <= 0 && Lane && Lane->Spline != NULL) {
-			MovementCooldown = 0.1f;
-			SplineDistance += 100;
-			FVector Location = Lane->Spline->GetWorldLocationAtDistanceAlongSpline(SplineDistance);
-
-			UNavigationSystem* const NavSys = GetWorld()->GetNavigationSystem();
-			float const Distance = FVector::Dist(Location, GetActorLocation());
-			// We need to issue move command only if far enough in order for walk animation to play correctly
-			if (NavSys && (Distance > 0.0f))
-			{
-				NavSys->SimpleMoveToLocation(GetController(), Location);
-			}
-
+		UNavigationSystem* const NavSys = GetWorld()->GetNavigationSystem();
+		float const Distance = FVector::Dist(Location, GetActorLocation());
+		// We need to issue move command only if far enough in order for walk animation to play correctly
+		if (NavSys && (Distance > 0.0f))
+		{
+			NavSys->SimpleMoveToLocation(GetController(), Location);
 		}
 	}
 }
 
+void AUnit::SetMovementSpeed(float Speed)
+{
+	GetCharacterMovement()->MaxWalkSpeed = Speed;
+}

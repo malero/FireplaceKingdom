@@ -9,3 +9,8 @@ void AMyPlayerState::SetTeam(ETeamEnum _Team)
 {
 	Team = _Team;
 }
+
+ETeamEnum AMyPlayerState::GetTeam()
+{
+	return Team;
+}

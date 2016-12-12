@@ -70,7 +70,7 @@ AActor* AFireplaceKingdomGameMode::ChoosePlayerStart(AController* Player)
 			TArray<AMyPlayerStart*> StartingAreas;
 			for (TActorIterator<AMyPlayerStart> StartItr(GetWorld()); StartItr; ++StartItr)
 			{
-				if (StartItr->Team == ETeamEnum::T_Santa)
+				if (StartItr->Team == PlayerState->GetTeam())
 					StartingAreas.Add(*StartItr);
 			}
 			return StartingAreas[FMath::RandRange(0, StartingAreas.Num() - 1)];

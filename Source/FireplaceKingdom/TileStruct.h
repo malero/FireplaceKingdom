@@ -29,4 +29,23 @@ struct FTileStruct : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float SpawnDelay;
+
+	// Stats
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Health;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float AttackMin;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float AttackMax;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float AttackDistance;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float VisionDistance;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float MovementSpeed;
 };
