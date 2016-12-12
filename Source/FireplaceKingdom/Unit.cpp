@@ -3,6 +3,7 @@
 #include "FireplaceKingdom.h"
 #include <EngineGlobals.h>
 #include <Runtime/Engine/Classes/Engine/Engine.h>
+#include "UnrealNetwork.h"
 #include "Unit.h"
 
 
@@ -24,13 +25,19 @@ AUnit::AUnit()
 void AUnit::BeginPlay()
 {
 	Super::BeginPlay();
-	MovementCooldown = 0;
-	Health = 100.f;
+}
+
+void AUnit::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AUnit, Health);
 }
 
 void AUnit::AttackTarget_Implementation(AUnit *Target)
 {
-	Target->Health -= FMath::RandRange(AttackMin, AttackMax);
+	float Damage = FMath::RandRange(AttackMin, AttackMax);
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString("Damage: ") + FString::SanitizeFloat(Damage) + FString(" Target Health:" + FString::SanitizeFloat(Target->Health)));
+	Target->Health -= Damage;
 }
 
 bool AUnit::AttackTarget_Validate(AUnit *Target)
@@ -50,7 +57,7 @@ void AUnit::Tick( float DeltaTime )
 
 void AUnit::MoveAlongSpline()
 {
-	if (Role == ROLE_Authority) {
+	if (Role == ROLE_Authority && Lane) {
 		SplineDistance += 100;
 		FVector Location = Lane->Spline->GetWorldLocationAtDistanceAlongSpline(SplineDistance);
 
@@ -67,4 +74,9 @@ void AUnit::MoveAlongSpline()
 void AUnit::SetMovementSpeed(float Speed)
 {
 	GetCharacterMovement()->MaxWalkSpeed = Speed;
+}
+
+float AUnit::GetHealth()
+{
+	return Health;
 }

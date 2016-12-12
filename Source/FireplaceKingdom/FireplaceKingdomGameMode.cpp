@@ -28,6 +28,15 @@ AFireplaceKingdomGameMode::AFireplaceKingdomGameMode()
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
 
+	// Set default HUD class
+	static ConstructorHelpers::FObjectFinder<UClass> HUDFinder(TEXT("WidgetBlueprint'/Game/HUD/BPGameHUD.BPGameHUD_C'"));
+	if (HUDFinder.Object) {
+		HUDClass = HUDFinder.Object;
+	}
+	else {
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString("Cannot find HUD"));
+	}
+
 	PlayerStateClass = AMyPlayerState::StaticClass();
 
 	GameStateClass = AMyGameStateBase::StaticClass();

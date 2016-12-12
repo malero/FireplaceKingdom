@@ -16,9 +16,12 @@ class FIREPLACEKINGDOM_API AMyPlayerState : public APlayerState
 	
 public:
 	void SetTeam(ETeamEnum _Team);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Team")
 	ETeamEnum GetTeam();
 
 private:
 	// The team of the player
+	UPROPERTY(Replicated)
 	ETeamEnum Team;
 };

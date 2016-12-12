@@ -20,7 +20,7 @@ EBTNodeResult::Type UBTTask_AttackElf::ExecuteTask(UBehaviorTreeComponent& Owner
 		ElfAI->MoveToActor(Enemy, 5.f, true, true, true, 0, true);
 		if (Elf->GetDistanceTo(Enemy) <= Elf->AttackDistance)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, "Attacking!!");
+			//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, "Attacking!!");
 			Elf->AttackTarget(Enemy);
 			return EBTNodeResult::Succeeded;
 		}

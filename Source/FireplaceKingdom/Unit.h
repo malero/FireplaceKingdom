@@ -31,8 +31,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Binding")
 	USkeletalMeshComponent* UnitMesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generator")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Unit")
 	ETeamEnum Team;
+
+	UFUNCTION(BlueprintCallable, category = "Unit")
+	float GetHealth();
 
 	void SetMovementSpeed(float Speed);
 	void MoveAlongSpline();
@@ -40,11 +43,22 @@ public:
 	float SplineDistance;
 	float MovementCooldown;
 
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = "Unit")
 	float Health;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Unit")
 	float AttackMin;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Unit")
 	float AttackMax;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Unit")
 	float AttackDistance;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Unit")
 	float VisionDistance; // How far can this unit see and spot enemeies/other PoIs?
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Unit")
 	float MovementSpeed;
 
 	UFUNCTION(Server, Reliable, WithValidation)
