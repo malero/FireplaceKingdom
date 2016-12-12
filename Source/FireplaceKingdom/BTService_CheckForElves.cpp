@@ -26,7 +26,7 @@ void UBTService_CheckForElves::TickNode(UBehaviorTreeComponent& OwnerComp, uint8
 		TArray<AUnit*> Enemies;
 		for (TActorIterator<AUnit> StartItr(GetWorld()); StartItr; ++StartItr)
 		{
-			if (StartItr->Team != Elf->Team && StartItr->GetDistanceTo(Elf) < 500.f)
+			if (StartItr->Team != Elf->Team && StartItr->GetDistanceTo(Elf) < 900.f)
 				Enemies.Add(*StartItr);
 		}
 
@@ -36,11 +36,11 @@ void UBTService_CheckForElves::TickNode(UBehaviorTreeComponent& OwnerComp, uint8
 		if (Enemy)
 		{
 			OwnerComp.GetBlackboardComponent()->SetValue<UBlackboardKeyType_Object>(ElfAI->EnemyKeyID, Enemy);
-			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, "Enemy is here!!");
+			//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, "Enemy is here!!");
 		}
 		else
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, "No Enemy :(");
+			//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, "No Enemy :(");
 		}
 	}
 }

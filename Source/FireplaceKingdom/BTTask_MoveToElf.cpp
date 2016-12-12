@@ -13,11 +13,16 @@
 EBTNodeResult::Type UBTTask_MoveToElf::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	AElfAI *ElfAI = Cast<AElfAI>(OwnerComp.GetAIOwner());
+	AUnit *Elf = Cast<AUnit>(ElfAI->GetPawn());
 	AUnit *Enemy = Cast<AUnit>(OwnerComp.GetBlackboardComponent()->GetValue<UBlackboardKeyType_Object>(ElfAI->EnemyKeyID));
 
-	if (Enemy)
+	if (Enemy && Elf)
 	{
 		ElfAI->MoveToActor(Enemy, 5.f, true, true, true, 0, true);
+		if (Elf->GetDistanceTo(Enemy) <= 250.f)
+		{
+			Elf->AttackTarget(Enemy);
+		}
 		return EBTNodeResult::Succeeded;
 	}
 	else

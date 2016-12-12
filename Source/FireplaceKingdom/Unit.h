@@ -36,4 +36,11 @@ public:
 
 	float SplineDistance;
 	float MovementCooldown;
+
+	float Health;
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void AttackTarget(AUnit *Target);
+	void AttackTarget_Implementation(AUnit *Target);
+	bool AttackTarget_Validate(AUnit *Target);
 };

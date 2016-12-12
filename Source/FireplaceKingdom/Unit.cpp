@@ -26,6 +26,17 @@ void AUnit::BeginPlay()
 {
 	Super::BeginPlay();
 	MovementCooldown = 0;
+	Health = 100.f;
+}
+
+void AUnit::AttackTarget_Implementation(AUnit *Target)
+{
+	Target->Health -= rand() % 4;
+}
+
+bool AUnit::AttackTarget_Validate(AUnit *Target)
+{
+	return true;
 }
 
 // Called every frame
@@ -33,6 +44,9 @@ void AUnit::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 	if (Role == ROLE_Authority) {
+		if (Health <= 0)
+			Destroy();
+
 		MovementCooldown -= DeltaTime;
 
 		if (MovementCooldown <= 0 && Lane && Lane->Spline != NULL) {
