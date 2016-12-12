@@ -16,17 +16,17 @@ struct FTileStruct : public FTableRowBase
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FName Name;
+	FName Name;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TSubclassOf<AUnit> Unit;
+	TSubclassOf<AUnit> Unit;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int32 UnitsToSpawn;
+	int32 UnitsToSpawn;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int32 UnitsPerSpawn;
+	int32 UnitsPerSpawn;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float SpawnDelay;
+	float SpawnDelay;
 };

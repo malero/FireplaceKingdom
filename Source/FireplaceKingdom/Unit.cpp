@@ -11,6 +11,7 @@ AUnit::AUnit()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	bReplicates = true;
 
 	// Configure character movement
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Rotate character to moving direction
@@ -31,21 +32,23 @@ void AUnit::BeginPlay()
 void AUnit::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-	MovementCooldown -= DeltaTime;
+	if (Role == ROLE_Authority) {
+		MovementCooldown -= DeltaTime;
 
-	if (MovementCooldown <= 0 && Lane->Spline != NULL) {
-		MovementCooldown = 0.1f;
-		SplineDistance += 100;
-		FVector Location = Lane->Spline->GetWorldLocationAtDistanceAlongSpline(SplineDistance);
+		if (MovementCooldown <= 0 && Lane && Lane->Spline != NULL) {
+			MovementCooldown = 0.1f;
+			SplineDistance += 100;
+			FVector Location = Lane->Spline->GetWorldLocationAtDistanceAlongSpline(SplineDistance);
 
-		UNavigationSystem* const NavSys = GetWorld()->GetNavigationSystem();
-		float const Distance = FVector::Dist(Location, GetActorLocation());
-		// We need to issue move command only if far enough in order for walk animation to play correctly
-		if (NavSys && (Distance > 0.0f))
-		{
-			NavSys->SimpleMoveToLocation(GetController(), Location);
+			UNavigationSystem* const NavSys = GetWorld()->GetNavigationSystem();
+			float const Distance = FVector::Dist(Location, GetActorLocation());
+			// We need to issue move command only if far enough in order for walk animation to play correctly
+			if (NavSys && (Distance > 0.0f))
+			{
+				NavSys->SimpleMoveToLocation(GetController(), Location);
+			}
+
 		}
-
 	}
 }
 

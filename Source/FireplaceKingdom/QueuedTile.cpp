@@ -2,13 +2,33 @@
 
 #include "FireplaceKingdom.h"
 #include "QueuedTile.h"
-
-void UQueuedTile::CalculateUnitsLeftToSpawn()
-{
-	UnitsLeftToSpawn = TileData.UnitsToSpawn;
-}
+#include <EngineGlobals.h>
+#include <Runtime/Engine/Classes/Engine/Engine.h>
 
 void UQueuedTile::DeductSpawnedUnits()
 {
-	UnitsLeftToSpawn -= TileData.UnitsPerSpawn;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString("Deducting"));
+	UnitsLeftToSpawn -= UnitsPerSpawn;
+}
+
+void UQueuedTile::DeductSpawnedUnit()
+{
+	UnitsLeftToSpawn -= 1;
+}
+
+void UQueuedTile::SetTileData(FTileStruct *Data)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString("Setting Tile Data: ") + FString(Data->Name.ToString()) + FString::FromInt(Data->UnitsPerSpawn));
+	TileData = Data;
+	Name = Data->Name;
+	Unit = Data->Unit;
+	UnitsToSpawn = Data->UnitsToSpawn;
+	UnitsPerSpawn = Data->UnitsPerSpawn;
+	SpawnDelay = Data->SpawnDelay;
+	UnitsLeftToSpawn = UnitsToSpawn;
+}
+
+int32 UQueuedTile::GetUnitsLeftToSpawn()
+{
+	return UnitsLeftToSpawn;
 }

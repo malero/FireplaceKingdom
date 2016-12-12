@@ -2,7 +2,3 @@
 
 #include "FireplaceKingdom.h"
 #include "FireplaceKingdomGameStateBase.h"
-
-
-
-

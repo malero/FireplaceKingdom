@@ -6,6 +6,7 @@
 #include "Tile.h"
 #include "QueuedTile.h"
 #include "LaneSpline.h"
+#include "Team.h"
 #include "UnitGenerator.generated.h"
 
 UCLASS()
@@ -23,26 +24,33 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
-
-	void GenerateUnit();
-	void SetSpawnTimer();
 	void AddTile(FName ID);
 	FVector GetRandomNearbyLocation();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Debug")
 	TArray<FName> DebugTiles;
 
+	UPROPERTY()
 	TArray<UQueuedTile*> Tiles;
 
-	UQueuedTile *pTile;
+	UPROPERTY()
+	UQueuedTile* Tile;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generator")
 	ALaneSpline* Lane;
 
-	float SpawnTimer;
-
-	float SpawnDelay;
-
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Generator")
 	UDataTable* DataTable;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generator")
+	ETeamEnum Team;
+
+protected:
+	FTimerHandle SpawnTimerHandle;
+
+	float TimerDelay;
+
+	void SetSpawnTimer();
+
+	void SpawnUnits();
 };

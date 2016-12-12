@@ -8,9 +8,10 @@ class AFireplaceKingdomGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
+
+	void PostLogin(APlayerController * NewPlayer) override;
+	AActor* ChoosePlayerStart(AController* Player);
 public:
 	AFireplaceKingdomGameMode();
+	bool ShouldSpawnAtStartSpot(AController* Player) override { return false; };
 };
-
-
-

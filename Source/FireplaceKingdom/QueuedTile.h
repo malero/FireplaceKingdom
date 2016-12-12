@@ -15,12 +15,23 @@ class FIREPLACEKINGDOM_API UQueuedTile : public UObject
 	GENERATED_BODY()
 
 public:
+	int32 GetUnitsLeftToSpawn();
 	void DeductSpawnedUnits();
+	void DeductSpawnedUnit();
 
-	void CalculateUnitsLeftToSpawn();
+	FName Name;
 
-	FTileStruct TileData;
+	TSubclassOf<AUnit> Unit;
 
-	int32 UnitsLeftToSpawn;
+	int32 UnitsToSpawn;
+
+	int32 UnitsPerSpawn;
+
+	float SpawnDelay;
 	
+	void SetTileData(FTileStruct *Data);
+
+protected:
+	int32 UnitsLeftToSpawn;
+	FTileStruct* TileData;
 };

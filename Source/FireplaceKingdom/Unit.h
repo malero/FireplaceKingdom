@@ -4,6 +4,7 @@
 
 #include "GameFramework/Character.h"
 #include "LaneSpline.h"
+#include "Team.h"
 #include "Unit.generated.h"
 
 UCLASS()
@@ -26,6 +27,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Binding")
 	USkeletalMeshComponent* UnitMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Generator")
+	ETeamEnum Team;
 
 	float SplineDistance;
 	float MovementCooldown;
