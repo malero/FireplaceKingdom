@@ -3,6 +3,3 @@
 #include "FireplaceKingdom.h"
 #include "MyPlayerStart.h"
 
-
-
-

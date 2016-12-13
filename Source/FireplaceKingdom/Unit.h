@@ -43,6 +43,9 @@ public:
 	float SplineDistance;
 	float MovementCooldown;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Unit")
+	bool Leader;
+
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = "Unit")
 	float Health;
 

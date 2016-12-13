@@ -7,7 +7,7 @@
 
 void UQueuedTile::DeductSpawnedUnits()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString("Deducting"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString("Deducting"));
 	UnitsLeftToSpawn -= UnitsPerSpawn;
 }
 
@@ -18,7 +18,7 @@ void UQueuedTile::DeductSpawnedUnit()
 
 void UQueuedTile::SetTileData(FTileStruct *Data)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString("Setting Tile Data: ") + FString(Data->Name.ToString()) + FString::FromInt(Data->UnitsPerSpawn));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString("Setting Tile Data: ") + FString(Data->Name.ToString()) + FString::FromInt(Data->UnitsPerSpawn));
 	TileData = Data;
 	Name = Data->Name;
 	Unit = Data->Unit;

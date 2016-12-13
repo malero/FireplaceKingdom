@@ -4,6 +4,8 @@
 #include "UnitGenerator.h"
 #include "QueuedTile.h"
 #include "TileStruct.h"
+#include "FireplaceKingdomGameMode.h"
+#include "MyGameStateBase.h"
 #include "Engine/DataTable.h"
 #include "UnrealNetwork.h"
 #include <EngineGlobals.h>
@@ -30,7 +32,7 @@ void AUnitGenerator::BeginPlay()
 			AddTile(DebugTiles[i]);
 		}
 		// Set initial spawn delay
-		TimerDelay = .1f;
+		TimerDelay = 1.f;
 		SetSpawnTimer();
 	}
 }
@@ -40,9 +42,14 @@ void AUnitGenerator::BeginPlay()
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }*/
 
+FTileStruct* AUnitGenerator::GetRow(FName ID)
+{
+	return DataTable->FindRow<FTileStruct>(ID, TEXT(""));
+}
+
 void AUnitGenerator::AddTile(FName ID)
 {
-	FTileStruct* Row = DataTable->FindRow<FTileStruct>(ID, TEXT(""));
+	FTileStruct* Row = GetRow(ID);
 	if (Row)
 	{
 		UQueuedTile * _Tile = NewObject<UQueuedTile>();
@@ -61,13 +68,24 @@ void AUnitGenerator::Tick( float DeltaTime )
 	Super::Tick( DeltaTime );
 }
 
+bool AUnitGenerator::IsActionMode()
+{
+	AFireplaceKingdomGameMode* GameMode = Cast<AFireplaceKingdomGameMode>(GetWorld()->GetAuthGameMode());
+	if (GameMode) {
+		AMyGameStateBase* State = GameMode->GetGameState();
+		if(State)
+			return State->CurrentState == EGameState::T_Action;
+	}
+	return false;
+}
+
 void AUnitGenerator::SpawnUnits()
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("SpawnUnitsCall"));
 	if (Role == ROLE_Authority)
 	{
 		UWorld* const World = GetWorld(); // get a reference to the world
-		if (World && Tile != nullptr)
+		if (World && Tile != nullptr && IsActionMode())
 		{
 			// if world exists
 			FActorSpawnParameters SpawnParams;
@@ -95,6 +113,7 @@ void AUnitGenerator::SpawnUnits()
 			if (Tile->GetUnitsLeftToSpawn() <= 0)
 			{
 				Tile = nullptr;
+				TimerDelay = 1.f;
 			}
 		}
 

@@ -13,6 +13,9 @@ UCLASS()
 class FIREPLACEKINGDOM_API AUnitGenerator : public AActor
 {
 	GENERATED_BODY()
+
+private:
+	bool IsActionMode();
 	
 public:	
 	// Sets default values for this actor's properties
@@ -25,6 +28,8 @@ public:
 	virtual void Tick( float DeltaSeconds ) override;
 
 	void AddTile(FName ID);
+	FTileStruct* GetRow(FName ID);
+
 	FVector GetRandomNearbyLocation();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Debug")

@@ -9,12 +9,14 @@
 #include "MyGameStateBase.h"
 #include "Team.h"
 #include "MyPlayerStart.h"
-
+#include "Unit.h"
 #include <EngineGlobals.h>
 #include <Runtime/Engine/Classes/Engine/Engine.h>
 
 AFireplaceKingdomGameMode::AFireplaceKingdomGameMode()
 {
+	PrimaryActorTick.bCanEverTick = true;
+
 	// set default Controller to CameraPawnController blueprint
 	static ConstructorHelpers::FClassFinder<APlayerController> PlayerControllerBPClass(TEXT("/Game/TopDownCPP/CameraPawnController"));
 	if (PlayerControllerBPClass.Class != NULL)
@@ -42,48 +44,68 @@ AFireplaceKingdomGameMode::AFireplaceKingdomGameMode()
 	GameStateClass = AMyGameStateBase::StaticClass();
 }
 
-void AFireplaceKingdomGameMode::PostLogin(APlayerController * NewPlayer) {
-	Super::PostLogin(NewPlayer);
-	if (NewPlayer)
-	{
-		AMyPlayerState* PlayerState = Cast<AMyPlayerState>(NewPlayer->PlayerState);
-		int32 PlayerCount = GameState->PlayerArray.Num();
-		if (GameState && PlayerState)
-		{
-			if (PlayerCount == 1)
-			{
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Setting Player to Team Santa"));
-				PlayerState->SetTeam(ETeamEnum::T_Santa);
-			}
-			else if(PlayerCount == 2)
-			{
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Setting Player to Team Krampus"));
-				PlayerState->SetTeam(ETeamEnum::T_Krampus);
-			}
-			else
-			{
-				// Kill the new player!!!! There isn't a third team. psh...
-				NewPlayer->Destroy();
-			}
-		}
-	}
+void AFireplaceKingdomGameMode::Tick(float DeltaSeconds) {
+	Super::Tick(DeltaSeconds);
+	GetGameState()->Tick(DeltaSeconds);
 }
 
-AActor* AFireplaceKingdomGameMode::ChoosePlayerStart(AController* Player)
+AMyGameStateBase* AFireplaceKingdomGameMode::GetGameState()
+{
+	AMyGameStateBase* State = Cast<AMyGameStateBase>(GameState);
+	if (State)
+		return State;
+	return NULL;
+}
+
+void AFireplaceKingdomGameMode::PostLogin(APlayerController * NewPlayer) {
+	Super::PostLogin(NewPlayer);
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Setting Teams!"));
+	AMyPlayerState* PlayerState = Cast<AMyPlayerState>(NewPlayer->PlayerState);
+	PlayerState->AddPoints(500);
+}
+
+AActor* AFireplaceKingdomGameMode::ChoosePlayerStart_Implementation(AController* Player)
 {
 	if (Player)
 	{
 		AMyPlayerState* PlayerState = Cast<AMyPlayerState>(Player->PlayerState);
 		if (PlayerState)
 		{
+			int32 PlayerCount = GameState->PlayerArray.Num();
+			if (GameState && PlayerState)
+			{
+
+				// Weird place to do this, but no time!
+				PlayerState->FindGenerators();
+
+				if (PlayerCount == 1)
+				{
+					PlayerState->SetTeam(ETeamEnum::T_Santa);
+				}
+				else if (PlayerCount == 2)
+				{
+					PlayerState->SetTeam(ETeamEnum::T_Krampus);
+					// There are two players, Start the game!!!
+					GetGameState()->CurrentState = EGameState::T_Build;
+				}
+			}
+
+
 			TArray<AMyPlayerStart*> StartingAreas;
 			for (TActorIterator<AMyPlayerStart> StartItr(GetWorld()); StartItr; ++StartItr)
 			{
 				if (StartItr->Team == PlayerState->GetTeam())
 					StartingAreas.Add(*StartItr);
 			}
-			return StartingAreas[FMath::RandRange(0, StartingAreas.Num() - 1)];
+
+			if (StartingAreas.Num() > 0) {
+				return StartingAreas[FMath::RandRange(0, StartingAreas.Num() - 1)];
+			}
 		}
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("No Spawn"));
 	}
 	return NULL;
 }

@@ -25,6 +25,9 @@ struct FTileStruct : public FTableRowBase
 	int32 UnitsToSpawn;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 Price;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 UnitsPerSpawn;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

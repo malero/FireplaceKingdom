@@ -4,6 +4,8 @@
 #include <EngineGlobals.h>
 #include <Runtime/Engine/Classes/Engine/Engine.h>
 #include "UnrealNetwork.h"
+#include "FireplaceKingdomGameMode.h"
+#include "MyPlayerState.h"
 #include "Unit.h"
 
 
@@ -36,6 +38,21 @@ void AUnit::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimePro
 void AUnit::AttackTarget_Implementation(AUnit *Target)
 {
 	float Damage = FMath::RandRange(AttackMin, AttackMax);
+	AFireplaceKingdomGameMode* GameMode = Cast<AFireplaceKingdomGameMode>(GetWorld()->GetAuthGameMode());
+	if (GameMode)
+	{
+		for (int32 i = 0; i < GameMode->GameState->PlayerArray.Num(); i++)
+		{
+			AMyPlayerState* PlayerState = Cast<AMyPlayerState>(GameMode->GameState->PlayerArray[i]);
+			if (PlayerState && PlayerState->GetTeam() == Team && Damage >= AttackMax - 1)
+			{
+				PlayerState->AddPoints(1);
+			}
+		}
+	}
+	else {
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString("No game mode"));
+	}
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString("Damage: ") + FString::SanitizeFloat(Damage) + FString(" Target Health:" + FString::SanitizeFloat(Target->Health)));
 	Target->Health -= Damage;
 }
